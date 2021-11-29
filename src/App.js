@@ -6,6 +6,7 @@ import Navigation from './Pages/Shared/Navigation/Navigation';
 import Login from './Pages/Login/Login/Login';
 import Register from './Pages/Login/Register/Register';
 import AuthProvider from './contexts/AuthProvider/AuthProvider';
+import PrivateRoute from './Pages/Login/PrivateRoute/PrivateRoute';
 
 const App=()=> {
   return (
@@ -20,9 +21,9 @@ const App=()=> {
            <Route path="/home">
             <Home/>
           </Route>
-          <Route path="/appointment">
+          <PrivateRoute path="/appointment">
             <Appointment/>
-          </Route>
+          </PrivateRoute>
           <Route path="/login">
             <Login/>
           </Route>

@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import TextField from '@mui/material/TextField';
-import { Button, Container, Typography , Grid} from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { Button, Container, Typography , Grid, CircularProgress, Alert} from '@mui/material';
+import { NavLink, useLocation, useHistory } from 'react-router-dom';
+import useAuth from '../../../hooks/useAuth';
 
 
 const Login = () => {
-
     const [loginData, setLoginData] = useState({});
+    const { user, loginUser, signInWithGoogle, isLoading, authError } = useAuth();
+
+    const location = useLocation();
+    const history = useHistory();
 
     const handleOnChange = (e) => {
         const field = e.target.name;
@@ -18,8 +22,11 @@ const Login = () => {
     }
 
     const handleLogin = (e) => {
-        alert('click')
+        loginUser(loginData.email, loginData.password, location, history);
         e.preventDefault();
+    }
+    const handleGoogleSignIn = () => {
+        signInWithGoogle(location, history);
     }
     return (
         <Container>
@@ -43,16 +50,18 @@ const Login = () => {
                             onBlur={handleOnChange}
                             variant="standard" />
 
-                        <Button sx={{ width: '75%', m: 1 }} type="submit" variant="contained">Login</Button>
+                        <Button sx={{ width: '75%', m: 1 }} type="submit" variant="contained">login</Button>
                         <NavLink
                             style={{ textDecoration: 'none' }}
                             to="/register">
                             <Button variant="text">New User? Please Register</Button>
                         </NavLink>
-
                     </form>
+                    {isLoading && <CircularProgress />}
+                    {user?.email && <Alert severity="success">User Login Successfully</Alert>}
+                    {authError && <Alert severity="error">{authError}</Alert>}
 
-                    <Button  variant="contained">Google Sign In</Button>
+                    <Button onClick={handleGoogleSignIn} variant="contained">Google Sign In</Button>
                 </Grid>
 
             </Grid>
